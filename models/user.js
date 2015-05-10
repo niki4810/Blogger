@@ -6,6 +6,7 @@ let nodeify = require('bluebird-nodeify')
 require('songbird')
 
 const SALT = bcrypt.genSaltSync(10)
+ const PEPPER = 'azxcv034957025lknvz897sadf325h'
 
 let UserSchema = mongoose.Schema({
 	username: {
@@ -25,8 +26,11 @@ let UserSchema = mongoose.Schema({
 })
 
 UserSchema.methods.generateHash = async function(password) {
-	console.log(SALT);
-	return await bcrypt.promise.hash(password, SALT)
+	console.log(SALT)
+	console.log(PEPPER)
+	let saltNPepper = SALT + PEPPER;
+	console.log(saltNPepper)
+	return await bcrypt.promise.hash(password, saltNPepper)
 }
 
 UserSchema.methods.validatePassword = async function(password) {
