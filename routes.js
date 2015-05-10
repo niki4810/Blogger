@@ -45,7 +45,7 @@ module.exports = (app) => {
     res.redirect('/')
   })
 
-  app.get('/post/:postId?', then(async (req, res) => {
+  app.get('/post/:postId?',isLoggedIn, then(async (req, res) => {
     let postId = req.params.postId
     if(!postId){      
       res.render('post.ejs', {
@@ -68,7 +68,7 @@ module.exports = (app) => {
     })
   }))
 
-  app.post('/post/:postId?', then(async (req, res) => {
+  app.post('/post/:postId?',isLoggedIn, then(async (req, res) => {
     let postId = req.params.postId
     let[{title: [title], content: [content]}, {image: [file]}] = await new multiparty.Form().promise.parse(req)
     if(!postId){     
