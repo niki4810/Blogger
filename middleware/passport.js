@@ -65,10 +65,9 @@ module.exports = (app) => {
       user.username = username
       user.email = email
       user.blogTitle = title      
-      user.blogDescription = description
-      
-      // Use a password hash instead of plain-text
-      user.password = await user.generateHash(password)
+      user.blogDescription = description          
+      user.password = password ;
+
       try{
         return await user.save()
       }catch(e) {
