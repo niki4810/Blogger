@@ -3,6 +3,7 @@ let multiparty = require('multiparty')
 let then  = require('express-then')
 let Post = require('./models/post')
 let fs = require('fs')
+let DataUri = require('datauri')
 
 module.exports = (app) => {
   let passport = app.passport
@@ -44,15 +45,28 @@ module.exports = (app) => {
     res.redirect('/')
   })
 
-  app.get('/post/:postId?', (req, res) => {
+  app.get('/post/:postId?', then(async (req, res) => {
     let postId = req.params.postId
     if(!postId){      
       res.render('post.ejs', {
         post: {},
         verb: 'Create'
       })    
-    }
-  })
+      return
+    } 
+
+    let post = await Post.promise.findById(postId)
+    if(!post) res.send(404, "Not found")
+
+    let duri = new DataUri
+    let image = duri.format("." + post.image.contentType.split("/").pop() ,
+      post.image.data)
+    res.render('post.ejs', {
+      post: post,
+      verb: 'Edit',
+      image: `data:${post.image.contentType};base64,${image.base64}`     
+    })
+  }))
 
   app.post('/post/:postId?', then(async (req, res) => {
     let postId = req.params.postId
@@ -62,10 +76,17 @@ module.exports = (app) => {
       post.title = title
       post.content = content
       post.image.data = await fs.promise.readFile(file.path)
-      post.image.contentType = file.headers['content-type']
-      await post.save()
+      post.image.contentType = file.headers['content-type']      
+      let result = await post.save()
+      console.log(result);
       res.redirect(`/blog/${encodeURI(req.user.blogTitle)}`)
       return
     }
+    let post = await Post.promise.findById(postId)
+    if(!post) res.send(404, "Not found")
+    post.title = title
+    post.content = content
+    await post.save()
+    res.redirect(`/blog/${encodeURI(req.user.blogTitle)}`) 
   }))
 }
