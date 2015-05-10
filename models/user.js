@@ -21,7 +21,10 @@ let UserSchema = mongoose.Schema({
 		type:String,
 		required: true
 	},
-	blogTitle:String,
+	blogTitle:{
+		type: String,
+		unique: true
+	},
 	blogDescription: String
 })
 

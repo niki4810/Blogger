@@ -17,7 +17,8 @@ let PostSchema = mongoose.Schema({
 		contentType: String
 	},
 	dateCreated: Date,
-	dateUpdated: Date
+	dateUpdated: Date,
+	blogTitle:String	
 })
 
 module.exports = mongoose.model('Post', PostSchema)
