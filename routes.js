@@ -70,23 +70,30 @@ module.exports = (app) => {
 
   app.post('/post/:postId?', then(async (req, res) => {
     let postId = req.params.postId
+    let[{title: [title], content: [content]}, {image: [file]}] = await new multiparty.Form().promise.parse(req)
     if(!postId){     
-      let post = new Post()
-      let[{title: [title], content: [content]}, {image: [file]}] = await new multiparty.Form().promise.parse(req)
+      let post = new Post() 
       post.title = title
       post.content = content
       post.image.data = await fs.promise.readFile(file.path)
       post.image.contentType = file.headers['content-type']      
       let result = await post.save()
+      console.log('created new post')
       console.log(result);
       res.redirect(`/blog/${encodeURI(req.user.blogTitle)}`)
       return
     }
+
     let post = await Post.promise.findById(postId)
-    if(!post) res.send(404, "Not found")
+    if(!post) res.send(404, "Could not find the requested post")
     post.title = title
     post.content = content
-    await post.save()
+    post.image.data = await fs.promise.readFile(file.path)
+    post.image.contentType = file.headers['content-type']
+    let updatedResult = await post.save()  
+    console.log('updated post')
+    console.log(updatedResult)
     res.redirect(`/blog/${encodeURI(req.user.blogTitle)}`) 
+    return    
   }))
 }
