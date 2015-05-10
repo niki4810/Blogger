@@ -60,6 +60,11 @@ module.exports = (app) => {
       if(await User.promise.findOne(getUserNameRegEx(username))) {
        return [false, {message: 'That username is already taken.'}] 
       }
+
+      if(await User.promise.findOne({blogTitle: title})) {
+       return [false, {message: 'That Blog Title has already been taken.'}]  
+      }
+      
       // create the user
       let user = new User()
       user.username = username
