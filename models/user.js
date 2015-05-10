@@ -41,4 +41,8 @@ UserSchema.path('password').validate((pw) => {
 	return pw.length >=4 && /[A-Z]/.test(pw) && /[a-z]/.test(pw) && /[0-9]/.test(pw)
 })
 
+UserSchema.path('username').validate((uname) => {
+	return (/[A-Z]/.test(uname) || /[a-z]/.test(uname)) && /[0-9]/.test(uname);
+})
+
 module.exports = mongoose.model('User', UserSchema)
