@@ -73,8 +73,11 @@ module.exports = (app) => {
     let[{title: [title], content: [content]}, {image: [file]}] = await new multiparty.Form().promise.parse(req)
     if(!postId){     
       let post = new Post() 
+      let dateCreated = new Date();
       post.title = title
       post.content = content
+      post.dateCreated = dateCreated
+      post.dateUpdated = dateCreated // when creating a new post, date created is equal to date updated
       post.image.data = await fs.promise.readFile(file.path)
       post.image.contentType = file.headers['content-type']      
       let result = await post.save()
@@ -89,6 +92,7 @@ module.exports = (app) => {
     post.title = title
     post.content = content
     post.image.data = await fs.promise.readFile(file.path)
+    post.dateUpdated = new Date() 
     post.image.contentType = file.headers['content-type']
     let updatedResult = await post.save()  
     console.log('updated post')
