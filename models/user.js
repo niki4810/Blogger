@@ -6,7 +6,7 @@ let nodeify = require('bluebird-nodeify')
 require('songbird')
 
 const SALT = bcrypt.genSaltSync(10)
- const PEPPER = 'azxcv034957025lknvz897sadf325h'
+const PEPPER = 'azxcv034957025lknvz897sadf325h'
 
 let UserSchema = mongoose.Schema({
 	username: {

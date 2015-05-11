@@ -10,6 +10,12 @@
         width: 50px;
         height: 50px;
       }
+      .comment{
+        border-bottom: 1px dotted #d8d8d8;        
+      }
+      .comment-field {
+        padding-top:10px;
+      }
     </style>
 </head>
 <body>
@@ -28,7 +34,37 @@
           <h3><%=blogPosts[i].title%></h3> 
           <h6><i> Last Modified: <%= blogPosts[i].displayDate%> </i></h6>           
           <p><%=blogPosts[i].content%></p>
+        </div>        
+        <div class="col-xs-12">
+          <h4>Comments</h4>
+          <% for(var j=0; j<blogPosts[i].comments.length; j++) {%>
+            <div class="comment">
+              <h5><%= blogPosts[i].comments[j].username%></h5>
+              <h6><%= blogPosts[i].comments[j].dateUpdated%></h6>
+              <p><%= blogPosts[i].comments[j].commentText%></p>
+            </div>
+          <% } %>                
         </div> 
+        <div class="col-xs-12 comment-field">
+          <form action="/comment/<%= blogPosts[i].id %>" method="post">
+            <div class="row">   
+              <input type="hidden" value="<%=blogTitle%>" name="blogTitle"/>           
+              <div class="col-xs-9">
+              <textarea class="form-control" placeholder="Add your comment here...."
+                      name="txtComment"></textarea>
+              </div>
+              <div class="col-xs-3">          
+                  <button type="submit" class="btn btn-warning btn-lg" data-post-id="<%= blogPosts[i].id %>">
+                    <% if(user) {%>
+                      Post
+                    <%} else {%>
+                      Login &amp; Post
+                    <%}%>             
+                  </button>        
+              </div>
+            </div>
+          </form>
+        </div>
       </div>
       <hr/>
     <% } %>

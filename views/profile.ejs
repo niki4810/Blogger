@@ -8,6 +8,9 @@
         body {            
             word-wrap:break-word;
         }
+        .post-title{
+            margin-top: 0;
+        }
     </style>
 </head>
 <body>
@@ -33,7 +36,7 @@
                 <strong>username</strong>: <%= user.username %><br>
                 <strong>email</strong>: <%= user.email %><br>
                 <strong>password</strong>: <%= user.password %><br>
-                <strong>Blog Title</strong>: <%= user.blogTitle %> <br>
+                <strong>Blog Title</strong>: <a href="/blog/<%= user.blogTitle %>"><%= user.blogTitle %></a> <br>
                 <strong>Blog Description</strong>: <%= user.blogDescription %>
             </p>
                 
@@ -48,15 +51,15 @@
     <% } else{ %>  
         <% for(var i=0; i<blogPosts.length; i++) {%>
            <div class="row" data-id="<%= blogPosts[i].id%>">            
-            <div class="col-xs-8">
-              <h3 ><%=blogPosts[i].title%></h3> 
+            <div class="col-xs-10">
+              <h3 class="post-title"><%=blogPosts[i].title%></h3> 
               <h6><i> Date created: <%= blogPosts[i].dateCreated%> </i></h6>
               <h6><i> Date Updated: <%= blogPosts[i].dateUpdated%> </i></h6>                         
             </div>
-            <div class="col-xs-2">
+            <div class="col-xs-1">
                <a href="/post/<%= blogPosts[i].id%>" class="btn btn-default  btn-sm ">Edit</a>  
             </div>
-            <div class="col-xs-2">
+            <div class="col-xs-1">
                 <form action="/post-delete/<%= blogPosts[i].id %>" method="post">
                     <button class="btn btn-default btn-danger btn-sm">Delete</button>               
                 </form>

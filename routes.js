@@ -8,6 +8,7 @@ let postGet = require('./routes/post/post-get')
 let postPost = require('./routes/post/post-post')
 let postDelete = require('./routes/post/post-delete')
 let profileGet = require('./routes/profile/profile-get')
+let commentPost = require('./routes/comment/comment-post')
 
 module.exports = (app) => {
   let passport = app.passport
@@ -58,4 +59,7 @@ module.exports = (app) => {
 
   // Blog page routes
   app.get('/blog/:blogTitle', then(blogGet))
+
+  // Comments route
+  app.post('/comment/:postId', isLoggedIn, then(commentPost))
 }

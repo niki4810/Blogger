@@ -29,7 +29,8 @@ module.exports = async (req, res) => {
     if(!post) res.send(404, "Could not find the requested post")
     post.title = title
     post.content = content
-    if(!_.isEmpty(file) && !_.isEmpty(file.path)) {
+    // update image only if the size is greater than 0
+    if(!_.isEmpty(file) && file.hasOwnProperty("size") && file.size > 0) {
       post.image.data = await fs.promise.readFile(file.path)
       post.image.contentType = file.headers['content-type']      
     }

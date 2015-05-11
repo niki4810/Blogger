@@ -1,8 +1,6 @@
 // post.js
 let mongoose = require('mongoose')
 
-require('songbird')
-
 let PostSchema = mongoose.Schema({
 	title: {
 		type:String,
