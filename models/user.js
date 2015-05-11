@@ -23,6 +23,7 @@ let UserSchema = mongoose.Schema({
 	},
 	blogTitle:{
 		type: String,
+		required: true,
 		unique: true
 	},
 	blogDescription: String
