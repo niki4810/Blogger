@@ -13,6 +13,10 @@ module.exports = async (req, res) => {
 	comment.dateUpdated = dateCreated
 	let result = await comment.promise.save()
 	console.log('created new comment')
-	console.log(result);	
-	res.redirect(`/blog/${encodeURI(req.body.blogTitle)}`)
+	console.log(result);
+	if(req.body.isProfilePage){
+		res.redirect('/profile')
+	}else {
+		res.redirect(`/blog/${encodeURI(req.body.blogTitle)}`)		
+	}	
 }
