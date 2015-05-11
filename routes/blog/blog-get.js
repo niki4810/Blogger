@@ -4,7 +4,7 @@ let _ = require('lodash')
 
 module.exports = async (req, res) => {    
     let blogTitle = req.params.blogTitle
-    let posts = await Post.promise.find(blogTitle);
+    let posts = await Post.promise.find({blogTitle: blogTitle});
     let blogObj = {
       blogTitle : blogTitle
     } 
