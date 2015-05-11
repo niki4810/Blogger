@@ -19,6 +19,7 @@ This is a basic Blogger clone to create a blog with comments.
 ![alt tag](https://raw.githubusercontent.com/niki4810/Blogger/master/images/step1-signup-login-logout.gif)
 
 ### Session and user accounts are persisted in a data store
+- All the data is stored into mongodb database. As we can see below when we restart out server, out previously registered users are still persisted.
 
 ![alt tag](https://raw.githubusercontent.com/niki4810/Blogger/master/images/step2-persistent.gif)
 
