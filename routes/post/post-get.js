@@ -1,6 +1,6 @@
 let Post = require('../../models/post')
 let DataUri = require('datauri')
-
+require('songbird')
 module.exports = async (req, res) => {
     let postId = req.params.postId
     if(!postId){      
