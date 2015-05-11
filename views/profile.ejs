@@ -41,9 +41,30 @@
 
     </div>
     <hr/>
-
     <h2>Users Blog post's </h2>
-
+    <hr/>
+    <% if(blogPosts.length === 0){ %>
+        <h2>No posts yet</h2>
+    <% } else{ %>  
+        <% for(var i=0; i<blogPosts.length; i++) {%>
+           <div class="row" data-id="<%= blogPosts[i].id%>">            
+            <div class="col-xs-8">
+              <h3 ><%=blogPosts[i].title%></h3> 
+              <h6><i> Date created: <%= blogPosts[i].dateCreated%> </i></h6>
+              <h6><i> Date Updated: <%= blogPosts[i].dateUpdated%> </i></h6>                         
+            </div>
+            <div class="col-xs-2">
+               <a href="/post/<%= blogPosts[i].id%>" class="btn btn-default  btn-sm ">Edit</a>  
+            </div>
+            <div class="col-xs-2">
+                <form action="/post-delete/<%= blogPosts[i].id %>" method="post">
+                    <button class="btn btn-default btn-danger btn-sm">Delete</button>               
+                </form>
+            </div> 
+          </div>
+          <hr/>
+        <% } %>
+    <% } %> 
 </div>
 </body>
 </html>

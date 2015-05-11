@@ -1,14 +1,13 @@
+// require libs
 let isLoggedIn = require('./middleware/isLoggedIn')
-let multiparty = require('multiparty')
 let then  = require('express-then')
-let Post = require('./models/post')
-let fs = require('fs')
-let DataUri = require('datauri')
-let _ = require('lodash')
 
+// require route callbacks
 let blogGet = require('./routes/blog/blog-get')
 let postGet = require('./routes/post/post-get')
 let postPost = require('./routes/post/post-post')
+let postDelete = require('./routes/post/post-delete')
+let profileGet = require('./routes/profile/profile-get')
 
 module.exports = (app) => {
   let passport = app.passport
@@ -47,24 +46,15 @@ module.exports = (app) => {
   })
 
   // Profile page routes
-  app.get('/profile', isLoggedIn, (req, res) => {
-    // let posts = await Post.promise.find(req.user.blogTitle);
-    // if(_.isEmpty(posts)) {
-    //   blogObj.blogPosts = [];      
-    // }else {
-
-    // }
-    res.render('profile.ejs', {
-      user: req.user,
-      message: req.flash('error')
-    })
-  })
+  app.get('/profile', isLoggedIn, then(profileGet))
 
 
   // Blog Post Page routes 
   app.get('/post/:postId?',isLoggedIn, then(postGet))
 
   app.post('/post/:postId?',isLoggedIn, then(postPost))
+
+  app.post('/post-delete/:postId', then(postDelete))
 
   // Blog page routes
   app.get('/blog/:blogTitle', then(blogGet))

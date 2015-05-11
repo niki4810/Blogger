@@ -3,6 +3,7 @@ let DataUri = require('datauri')
 let multiparty = require('multiparty')
 let fs = require('fs')
 let _ = require('lodash')
+require('songbird')
 
 module.exports = async (req, res) => {
     let postId = req.params.postId
@@ -28,7 +29,7 @@ module.exports = async (req, res) => {
     if(!post) res.send(404, "Could not find the requested post")
     post.title = title
     post.content = content
-    if(!_.isEmpty(file)) {
+    if(!_.isEmpty(file) && !_.isEmpty(file.path)) {
       post.image.data = await fs.promise.readFile(file.path)
       post.image.contentType = file.headers['content-type']      
     }
