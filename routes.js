@@ -93,8 +93,10 @@ module.exports = (app) => {
     if(!post) res.send(404, "Could not find the requested post")
     post.title = title
     post.content = content
-    post.image.data = await fs.promise.readFile(file.path)
-    post.image.contentType = file.headers['content-type']
+    if(!_.isEmpty(file)) {
+      post.image.data = await fs.promise.readFile(file.path)
+      post.image.contentType = file.headers['content-type']      
+    }
     post.dateUpdated = new Date() 
     post.blogTitle = req.user.blogTitle
     let updatedResult = await post.save()  
@@ -120,13 +122,21 @@ app.get('/blog/:blogTitle', then(async (req, res) => {
         let imgURL = `data:${post.image.contentType};base64,${img.base64}`
         post.displayImage = imgURL
         post.displayDate = ""
+        
         if(post.dateCreated) {
-          if(post.dateUpdated > post.dateCreated) {
+          if(post.dateUpdated){
+            if(post.dateUpdated > post.dateCreated) {
+              post.displayDate = post.dateUpdated.toString()
+            }else {
+              post.displayDate = post.dateCreated.toString()
+            }                
+          }else{
+            post.displayDate = post.dateCreated.toString();
+          }
+        } else if(post.dateUpdated) {
           post.displayDate = post.dateUpdated.toString()
-          }else {
-            post.displayDate = post.dateCreated.toString()
-          }  
-        }        
+        }
+
         return post
       })
     }
